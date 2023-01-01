@@ -13,12 +13,18 @@ public class NodeSelect : MonoBehaviour
     //RaycastのHitを格納する変数
     private RaycastHit _hit;
 
+    void Update(){
+        //もしスペースが押されたらセレクトを解除する
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Deselect();
+        }
+    }
+
     //Nodeを選択する関数
     public void Select()
      {
-        //もしクリックしたオブジェクトが空なら
-        if (_clickedObject == null)
-        {
+            _clickedObject = null;
             //マウスのレイを取得
             _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             //raycasthitを取得
@@ -36,12 +42,8 @@ public class NodeSelect : MonoBehaviour
                 }
             }
         }
-        //空じゃなかったら
-        else if (_clickedObject!= null)
-        {
-            //クリックしたオブジェクトを空にする
-            _clickedObject = null;
-        }
         
+    public void Deselect(){
+        selectNode = null;
     }
 }
