@@ -13,10 +13,12 @@ public class NodeGenerator : MonoBehaviour
     //ダブルクリックの確認
     private int _touchCount = 0;
 
+    NodeSelect nodeSelect;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+       nodeSelect = gameObject.GetComponent<NodeSelect>();
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class NodeGenerator : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            nodeSelect.Select();
             _touchCount++;
             Invoke("DoubleClicks",0.3f);
         }
