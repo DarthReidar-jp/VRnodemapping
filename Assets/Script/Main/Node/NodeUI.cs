@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class NodeUI : MonoBehaviour
 {
-     //セレクトスクリプトを格納する変数
-    public NodeSelect nodeSelect;
+    //セレクトスクリプトを格納する変数
+    NodeSelect _nodeSelect;
     // UIを変更するNodeを格納する変数
     public GameObject changeNode;
-        //UI表示中のフラグ
+    //UI表示中のフラグ
     public bool UIenable = false;
     //パネルを格納する変数
     [SerializeField] GameObject _panel;
@@ -18,23 +18,24 @@ public class NodeUI : MonoBehaviour
     void Start()
     {
         //ノードセレクトのスクリプトを取得
-        nodeSelect = gameObject.GetComponent<NodeSelect>();
+        _nodeSelect = gameObject.GetComponent<NodeSelect>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //もし、右クリックかつ選ばれたノードがあれば
-        if (Input.GetMouseButtonDown(1) && nodeSelect.selectNode != null)
+        if (Input.GetMouseButtonDown(1))
         {
             //テスト用
             Debug.Log("選択できたよ");
+            //セレクトノードをチェンジノードに格納する
+            changeNode = _nodeSelect.SelectReturn();
+            Debug.Log(changeNode);
             // UIパネルを表示する
             _panel.SetActive(true);
             // UIフラグを正にする
             UIenable = true;
-            //セレクトノードをチェンジノードに格納する
-            changeNode = nodeSelect.selectNode;
         }
         //もし左シフトが押されたら
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -43,6 +44,5 @@ public class NodeUI : MonoBehaviour
             _panel.SetActive(false);
             UIenable = false;
         }
-
     }
 }
