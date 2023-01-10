@@ -4,100 +4,98 @@ using UnityEngine;
 
 public class FirstPersonControl : MonoBehaviour
 {
-    //
-    float _xPos, _zPos;
-    //プレイヤーの速度変数
-    [SerializeField] float _speed = 0.1f;
-    //カメラオブジェクトの取得
-    public GameObject cam;
-    //カメラの角度と、プレイヤの角度変数
-    Quaternion _cameraRot, _playerRot;
-    //x感度とy感度変数
-    float _Xsensityvity = 3f, _Ysensityvity = 3f;
-    //カーソルロックの確認変数
-    bool _cursorLock = true;
-    //角度の制限用
-    float _minX = -90f, _maxX = 90f;
-    //UI表示中か確認
-    NodeUI nodeUI;
+    //_付きの変数はプライベート、無しの変数はパブリック
+    
+    //プレイヤー関連変数宣言群（移動量、速度、角度）
+    float _xAmount, _zAmount;
+    float _speed = 0.1f;
+    Quaternion _playerRot;
 
-    // Start is called before the first frame update
+    //カメラ関連変数宣言群（ゲームオブジェクト、角度、感度）
+    public GameObject cam;
+    Quaternion _cameraRot;
+    float _minX = -90f, _maxX = 90f;
+    float _Xsensityvity = 3f, _Ysensityvity = 3f;
+    
+    //マウス関連変数宣言群（マウス入力を角度にしたもの,カーソルロック）
+    float _xInputRot , _yInputRot;
+    bool _isCursorLock = true;
+    //NodeUIスクリプト格納用
+    NodeUI _nodeUI;
+
     void Start()
     {
-        //カメラのローカル角度の取得
+        //カメラ角度、プレイヤー角度、NodeUIの取得
         _cameraRot = cam.transform.localRotation;
-        //プレイヤーのローカル角度の取得
         _playerRot = transform.localRotation;
-        //nodeUIの取得
-        nodeUI = GameObject.Find("NodeManager").GetComponent<NodeUI>();
+        _nodeUI = GameObject.Find("NodeManager").GetComponent<NodeUI>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (nodeUI.UIenable == false)
+        //もしUIが非表示ならば、カメラの移動を許可する
+        if (_nodeUI.isUIenable == false)
         {
             //マウスの動きからxとyの角度を代入
-        float xRot = Input.GetAxis("Mouse X") * _Ysensityvity;
-        float yRot = Input.GetAxis("Mouse Y") * _Xsensityvity;
-        //その角度をオイラー角度にしてそれぞれの角度に代入
-        _cameraRot *= Quaternion.Euler(-yRot, 0, 0);
-        _playerRot *= Quaternion.Euler(0, xRot, 0);
-
-        //角度制限を加えて再代入
-        _cameraRot = ClampRotation(_cameraRot);
-        //変数を実際のコンポーネントに代入
-        cam.transform.localRotation = _cameraRot;
-        transform.localRotation = _playerRot;
-        //カーソルロック関数
-        UpdateCursorLock();
-
+            _xInputRot = Input.GetAxis("Mouse X") * _Ysensityvity;
+            _yInputRot = Input.GetAxis("Mouse Y") * _Xsensityvity;
+            //インプット角度をオイラー角度にしてカメラとプレイヤーの角度に代入
+            _cameraRot *= Quaternion.Euler(-_yInputRot, 0, 0);
+            _playerRot *= Quaternion.Euler(0, _xInputRot, 0);
+            //カメラ角度は制限を加える
+            _cameraRot = ClampRotation(_cameraRot);
+            //カメラとプレイヤーの角度を実体に代入
+            cam.transform.localRotation = _cameraRot;
+            transform.localRotation = _playerRot;
+            //カーソルロック関数を呼び出す
+            UpdateCursorLock();
         }
         
     }
     
-    //移動用fixrdUpdate
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if (nodeUI.UIenable ==false)
+        //もしUIが非表示ならば、移動を許可する
+        if (_nodeUI.isUIenable ==false)
         {
-            //xposとzposに０を代入
-        _xPos = 0;
-        _zPos = 0;
-        //水平と垂直入力にスピードをかけてそれぞれのポジションに代入
-        _xPos = Input.GetAxisRaw("Horizontal") * _speed;
-        _zPos = Input.GetAxisRaw("Vertical") * _speed;
-
-        //transform.position += new Vector3(x,0,z);
-        transform.position += cam.transform.forward * _zPos + cam.transform.right * _xPos;
-        }
-        
+            //x軸とz軸の移動量の初期化
+            _xAmount = 0;
+            _zAmount = 0;
+            //左右前後の移動の入力
+            _xAmount = Input.GetAxisRaw("Horizontal") * _speed;
+            _zAmount = Input.GetAxisRaw("Vertical") * _speed;
+            //左右前後移動の実施
+            transform.position += cam.transform.forward * _zAmount + cam.transform.right * _xAmount;
+        }   
     }
 
-    ///カーソルロックの関数
+    //カーソルロック関数
     public void UpdateCursorLock()
     {
+        //もしescapeが押されたらカーソルロックを偽にする
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            _cursorLock = false;
+            _isCursorLock = false;
         }
+        //もしPが押されたらカーソルロックを真にする。
         else if(Input.GetKeyDown(KeyCode.P))
         {
-            _cursorLock = true;
+            _isCursorLock = true;
         }
 
-
-        if (_cursorLock)
+        //真だったら、カーソルロックする
+        if (_isCursorLock)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-        else if(!_cursorLock)
+        //偽だったら、カーソルロックを解除する
+        else if(!_isCursorLock)
         {
             Cursor.lockState = CursorLockMode.None;
         }
     }
     
-    //角度制限関数の作成
+    //角度制限関数（2023年1月時点はよくわかっていない。）
     public Quaternion ClampRotation(Quaternion q)
     {
         //q = x,y,z,w (x,y,zはベクトル（量と向き）：wはスカラー（座標とは無関係の量）)

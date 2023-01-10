@@ -13,44 +13,26 @@ public class NodeSelect : MonoBehaviour
     //RaycastのHitを格納する変数
     private RaycastHit _hit;
 
-    void Update(){
-        //もしスペースが押されたらセレクトを解除する
-        if (Input.GetKeyDown(KeyCode.Tab))
+    //Nodeを選択する関数（選択したゲームオブジェクトを返す）
+    public GameObject Select()
+    {
+        //クリックオブジェクトを空にする
+        _clickedObject = null;
+        //マウスの位置を取得、新しいレイを作成してそれをhitに入れる
+        _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        _hit = new RaycastHit();
+        //もしマウスから飛んだレイに衝突したものがあれば当たったものを取得する
+        if (Physics.Raycast(_ray, out _hit))
         {
-            Deselect();
-        }
-    }
-
-    //Nodeを選択する関数（たぶん、複数選択用）
-    public void Select()
-     {
-            _clickedObject = null;
-            //マウスのレイを取得
-            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //raycasthitを取得
-            _hit = new RaycastHit();
-            //もしレイキャストで帰ってくるものがあれば
-            if (Physics.Raycast(_ray, out _hit)) {
-                //クリックオブジェクトに当たったものを格納
-                _clickedObject = _hit.collider.gameObject;
-                //もしクリックオブジェクトがNodeなら
-                 if (_clickedObject.CompareTag("Node"))
-                 {
-                    //パブリックな変数に格納
-                    selectNode = _clickedObject;
-                }
+            _clickedObject = _hit.collider.gameObject;
+            //当たった対象がNodeなら、選択Nodeとして格納
+            if (_clickedObject.CompareTag("Node"))
+            {
+                selectNode = _clickedObject;
             }
         }
-
-    //Nodeを選択しリターンする関数（node操作系）
-    public GameObject SelectReturn()
-     {
-        Select();
+        //選択したNodeを返す
         return selectNode;
     }
     
-    //選択解除関数
-    public void Deselect(){
-        selectNode = null;
-    }
 }

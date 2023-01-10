@@ -5,16 +5,18 @@ using UnityEngine.UI;
 
 public class NodeUI : MonoBehaviour
 {
+    //_付きの変数はプライベート、無しの変数はパブリック
+
+    //UI関連変数宣言群（変更Node,UI表示中）
+    public GameObject changeNode;
+    public bool isUIenable = false;
+
     //セレクトスクリプトを格納する変数
     NodeSelect _nodeSelect;
-    // UIを変更するNodeを格納する変数
-    public GameObject changeNode;
-    //UI表示中のフラグ
-    public bool UIenable = false;
+
     //パネルを格納する変数
     [SerializeField] GameObject _panel;
 
-    // Start is called before the first frame update
     void Start()
     {
         //ノードセレクトのスクリプトを取得
@@ -27,22 +29,23 @@ public class NodeUI : MonoBehaviour
         //もし、右クリックかつ選ばれたノードがあれば
         if (Input.GetMouseButtonDown(1))
         {
-            //テスト用
-            Debug.Log("選択できたよ");
             //セレクトノードをチェンジノードに格納する
-            changeNode = _nodeSelect.SelectReturn();
-            Debug.Log(changeNode);
-            // UIパネルを表示する
-            _panel.SetActive(true);
-            // UIフラグを正にする
-            UIenable = true;
+            changeNode = _nodeSelect.Select();
+            if (changeNode != null)
+            {
+                //UIパネルを表示する
+                _panel.SetActive(true);
+                //UIフラグを正にする
+                isUIenable = true;
+            }
         }
-        //もし左シフトが押されたら
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        //もしTabが押されたら
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             //パネルを非表示にして、 UIフラグを負にする
             _panel.SetActive(false);
-            UIenable = false;
+            changeNode = null;
+            isUIenable = false;
         }
     }
 }
