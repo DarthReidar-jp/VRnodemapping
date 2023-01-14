@@ -5,7 +5,6 @@ using UnityEngine;
 public class DrawBranch : MonoBehaviour
 {
     LineRenderer lineRenderer;
-    // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -17,55 +16,48 @@ public class DrawBranch : MonoBehaviour
         lineRenderer.endWidth = 0.1f;
     }
 
+    //ブランチがノードと繋がっているかのフラグ
     bool isBranchCorect = false;
     RaycastHit hitNode;
-    public bool isBranchDrawing;
+    GameObject _purposeNode;
     // Update is called once per frame
     void Update()
     {
-        //このオブジェクトの位置を格納
-        Vector3 thisNode = transform.parent.position;
-        //もし左ホールドとシフトが押されたら
+        Vector3 parentNode = transform.parent.position;
         if(Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftShift) && isBranchCorect==false)
         {
-            // Vector3でマウス位置座標を取得する
 		    Vector3 position = Input.mousePosition;
-		    // Z軸にこのNodeのZ位置を入れる
 		    position.z = 10f;
-		    // マウス位置座標をスクリーン座標からワールド座標に変換する
 		    var screenToWorldPoint = Camera.main.ScreenToWorldPoint(position);
 
-            //このノードとマウスポインタの線を描画
-            lineRenderer.SetPosition(0, thisNode);
+            //親ノードとマウスポインタの線を描画
+            lineRenderer.SetPosition(0, parentNode);
             lineRenderer.SetPosition(1, screenToWorldPoint);
 
-            //マウスからのレイを格納
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //もしレイが何かオブジェクトにヒットしたら以下の処理を行う
             if(Physics.Raycast(rayOrigin, out hitNode))
-             {
-                //もしヒットしたオブジェクトがPlayerなら
+            {
                 if (hitNode.collider.CompareTag("Node"))
                 {
-                    //このノードと目的ノードのブランチを描画
-                    lineRenderer.SetPosition(0, thisNode);
-                    lineRenderer.SetPosition(1, hitNode.transform.position);
-                    //ブランチが決定
+                    _purposeNode = hitNode.collider.gameObject;
+                    lineRenderer.SetPosition(0, parentNode);
+                    lineRenderer.SetPosition(1, _purposeNode.transform.position);
                     isBranchCorect = true;
                 }
-             }
+            }
         }
+
         if (isBranchCorect)
         {
-            lineRenderer.SetPosition(0, thisNode);
-            lineRenderer.SetPosition(1, hitNode.transform.position);
-        }     
+            lineRenderer.SetPosition(0, parentNode);
+            lineRenderer.SetPosition(1, _purposeNode.transform.position);
+        }
+
         if (Input.GetMouseButtonUp(0)&& isBranchCorect ==false)
         {
             Destroy(this.gameObject);
         }
 
-        isBranchDrawing = false;
     }
 }
 
