@@ -15,12 +15,13 @@ public class NodeGenerator : MonoBehaviour
 
     //Node複数選択用リスト
 
-    NodeSelect _nodeSelect;
+    public NodeSelect nodeSelect;
+    public GameObject selectedNode;
 
     // Start is called before the first frame update
     void Start()
     {
-       _nodeSelect = gameObject.GetComponent<NodeSelect>();
+       nodeSelect = gameObject.GetComponent<NodeSelect>();
     }
 
     // Update is called once per frame
@@ -29,6 +30,8 @@ public class NodeGenerator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             //Nodeを複数選択できるようにする
+            selectedNode = nodeSelect.SelectNode();
+            Debug.Log(selectedNode+"選択中");
 
             //ダブルクリックのカウントと0.3秒でダブルクリックチェック用関数を呼び出す
             _clickCount++;

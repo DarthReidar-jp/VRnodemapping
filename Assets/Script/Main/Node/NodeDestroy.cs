@@ -18,7 +18,7 @@ public class NodeDestroy : MonoBehaviour
        //選択されたノードを削除する
         if (Input.GetMouseButtonDown(2))
         {
-            Destroy(_nodeSelect.Select());
+            Destroy(_nodeSelect.SelectNode());
         }
     }
 }

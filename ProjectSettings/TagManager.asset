@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Node
   - Environment
+  - Branch
   layers:
   - Default
   - TransparentFX

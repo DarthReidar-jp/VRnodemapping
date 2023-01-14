@@ -14,7 +14,7 @@ public class NodeSelect : MonoBehaviour
     private RaycastHit _hit;
 
     //Nodeを選択する関数（選択したゲームオブジェクトを返す）
-    public GameObject Select()
+    public void Select()
     {
         //クリックオブジェクトを空にする
         _clickedObject = null;
@@ -31,8 +31,22 @@ public class NodeSelect : MonoBehaviour
                 selectNode = _clickedObject;
             }
         }
-        //選択したNodeを返す
+    }
+
+    public GameObject SelectNode()
+    {
+        Select();
         return selectNode;
+    }
+
+    public bool SelectNodeBool()
+    {
+        Select();
+        if (selectNode == null)
+        {
+            return false;
+        }
+        return true;
     }
     
 }

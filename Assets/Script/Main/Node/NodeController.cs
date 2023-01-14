@@ -24,7 +24,7 @@ public class NodeController : MonoBehaviour
     void OnMouseDrag()
     {
         //もしqが押されていないかつ、UIが非表示ならばNodeの移動を許可する。
-        if (Input.GetKey("q") == false && _nodeUI.isUIenable == false)
+        if (Input.GetKey(KeyCode.LeftShift) == false && _nodeUI.isUIenable == false)
         {
             //選択されたNodeのスクリーン座標のポジションを変数に代入
             _nodePos = Camera.main.WorldToScreenPoint(transform.position);

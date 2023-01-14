@@ -30,7 +30,7 @@ public class NodeUI : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             //セレクトノードをチェンジノードに格納する
-            changeNode = _nodeSelect.Select();
+            changeNode = _nodeSelect.SelectNode();
             if (changeNode != null)
             {
                 //UIパネルを表示する
