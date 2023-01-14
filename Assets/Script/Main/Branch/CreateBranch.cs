@@ -5,13 +5,13 @@ using UnityEngine;
 public class CreateBranch : MonoBehaviour
 {
     public GameObject branch;
-    NodeGenerator nodeGenerator;
-    NodeSelect nodeSelect;
+
+    public GameObject selectNode;
+
 
     void start()
     {
-        nodeGenerator = GameObject.Find("NodeManager").GetComponent<NodeGenerator>();
-        nodeSelect= GameObject.Find("NodeManager").GetComponent<NodeSelect>();
+        
     }
 
     void Update()
@@ -23,15 +23,30 @@ public class CreateBranch : MonoBehaviour
         //対策として、現在マウスが上に乗っているノードのみから線を引くという条件を足したい。
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift))
         {
-            _addLineObject();
+            //マウスの位置を取得、新しいレイを作成してそれをhitに入れる
+            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit _hit = new RaycastHit();
+            //もしマウスから飛んだレイに衝突したものがあれば当たったものを取得する
+            if (Physics.Raycast(_ray, out _hit))
+            {
+                GameObject _clickedObject = _hit.collider.gameObject;
+                //当たった対象がNodeなら、選択Nodeとして格納
+                if (_clickedObject.CompareTag("Node"))
+                {
+                    selectNode = _clickedObject;
+                    Invoke("_addLineObject",0.5f);
+                }
+            }
         }   
         
     }
 
     private void _addLineObject()
     {
+        
         GameObject childObject = Instantiate(branch) as GameObject;
-        childObject.transform.parent = this.transform;
+        childObject.transform.parent = selectNode.transform;
+        //Debug.Log("ブランチ作れたよ");
     }
     }
 

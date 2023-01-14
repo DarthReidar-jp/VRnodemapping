@@ -17,8 +17,9 @@ public class DrawBranch : MonoBehaviour
         lineRenderer.endWidth = 0.1f;
     }
 
-    bool isBranchCorect;
+    bool isBranchCorect = false;
     RaycastHit hitNode;
+    public bool isBranchDrawing;
     // Update is called once per frame
     void Update()
     {
@@ -63,6 +64,8 @@ public class DrawBranch : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        isBranchDrawing = false;
     }
 }
 

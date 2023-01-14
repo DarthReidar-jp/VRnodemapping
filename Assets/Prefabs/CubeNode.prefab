@@ -340,9 +340,10 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8725303123971802551}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587b53b8e17b942cea2db12e84b0c34b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   branch: {fileID: 2790803867673872626, guid: a1fe5c7add16a4679a1b3257159052cf, type: 3}
+  selectNode: {fileID: 0}

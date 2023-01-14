@@ -30,8 +30,6 @@ public class NodeGenerator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             //Nodeを複数選択できるようにする
-            selectedNode = nodeSelect.SelectNode();
-            Debug.Log(selectedNode+"選択中");
 
             //ダブルクリックのカウントと0.3秒でダブルクリックチェック用関数を呼び出す
             _clickCount++;
