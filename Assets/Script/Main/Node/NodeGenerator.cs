@@ -14,7 +14,6 @@ public class NodeGenerator : MonoBehaviour
     private int _clickCount = 0;
 
     //Node複数選択用リスト
-
     public NodeSelect nodeSelect;
     public GameObject selectedNode;
 
@@ -54,13 +53,15 @@ public class NodeGenerator : MonoBehaviour
         Generator();
    }
 
-   //Nodeのインスタンス化関数
+    //Node設置の奥行き
+    [SerializeField] float nodeZ = 1f;
+    //Nodeのインスタンス化関数
     void Generator ()
     {
         //マウスのポジションを代入
         _mousePos = Input.mousePosition;
 		// Z軸を代入
-		_mousePos.z = 5f;
+		_mousePos.z = nodeZ;
 		// マウス位置座標をスクリーン座標からワールド座標に変換する
 		_nodePos = Camera.main.ScreenToWorldPoint(_mousePos);
 		// ワールド座標に変換されたマウス座標を代入

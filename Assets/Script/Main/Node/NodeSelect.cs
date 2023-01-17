@@ -26,7 +26,7 @@ public class NodeSelect : MonoBehaviour
         {
             _clickedObject = _hit.collider.gameObject;
             //当たった対象がNodeなら、選択Nodeとして格納
-            if (_clickedObject.CompareTag("Node"))
+            if (_clickedObject.CompareTag("Node") || _clickedObject.CompareTag("Branch") )
             {
                 selectNode = _clickedObject;
             }

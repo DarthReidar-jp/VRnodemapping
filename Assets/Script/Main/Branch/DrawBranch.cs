@@ -5,6 +5,7 @@ using UnityEngine;
 public class DrawBranch : MonoBehaviour
 {
     LineRenderer lineRenderer;
+    GameObject nodeUI;
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -14,6 +15,8 @@ public class DrawBranch : MonoBehaviour
         lineRenderer.endColor = Color.white;
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
+
+        nodeUI = GameObject.Find("NodeManager");
     }
 
     //ブランチがノードと繋がっているかのフラグ
@@ -46,9 +49,15 @@ public class DrawBranch : MonoBehaviour
                 }
             }
         }
+        
 
         if (isBranchCorect)
         {
+           if(_purposeNode == null)
+            {
+                NodeShapeChange nodeShapeChange = nodeUI.gameObject.GetComponent<NodeShapeChange>();
+                _purposeNode = nodeShapeChange.changedNode;
+            }
             lineRenderer.SetPosition(0, parentNode);
             lineRenderer.SetPosition(1, _purposeNode.transform.position);
         }

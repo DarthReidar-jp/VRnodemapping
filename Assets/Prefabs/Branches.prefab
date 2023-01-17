@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8405386986611442640}
   - component: {fileID: 6590107871592880835}
   - component: {fileID: 2757848984661092881}
+  - component: {fileID: 5259585347908403796}
   m_Layer: 0
   m_Name: Branches
   m_TagString: Branch
@@ -167,3 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863bef7ce7c1f49baa41b55de50fc345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5259585347908403796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2790803867673872626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ffa08912b20460fa27bc67bd0a7ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overHeadMsg: {fileID: 0}
